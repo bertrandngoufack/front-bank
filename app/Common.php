@@ -13,3 +13,24 @@
  *
  * @see: https://codeigniter.com/user_guide/extending/common.html
  */
+
+// Fallback shim for PHP intl Locale class when the intl extension is missing.
+// This avoids fatal errors like "Class 'Locale' not found" while still allowing
+// the application to run. It only implements the minimal methods used by CI4.
+if (!class_exists('Locale')) {
+    class Locale
+    {
+        protected static string $default = 'en';
+
+        public static function getDefault(): string
+        {
+            return static::$default;
+        }
+
+        public static function setDefault(string $locale): bool
+        {
+            static::$default = $locale ?: 'en';
+            return true;
+        }
+    }
+}
